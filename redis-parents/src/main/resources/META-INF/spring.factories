@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  lyzzcw.work.component.redis.config.CacheConfig
