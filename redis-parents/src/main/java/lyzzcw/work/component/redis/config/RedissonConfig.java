@@ -36,7 +36,7 @@ import java.util.Arrays;
 @Configuration
 public class RedissonConfig {
 
-    @Value("${spring.redis.address}")
+    @Value("#{'redis://'.concat('${spring.redis.host}').concat(':').concat('${spring.redis.port}')}")
     private String redisAddress;
 
     @Value("${spring.redis.password}")

@@ -48,6 +48,15 @@ public class RedisCache {
     }
 
     /**
+     * 缓存是否存在
+     * @param key
+     * @return
+     */
+    public Boolean exist(final String key) {
+        return redisTemplate.hasKey(key);
+    }
+
+    /**
      * 设置有效时间
      *
      * @param key     Redis键
