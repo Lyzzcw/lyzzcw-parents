@@ -4,22 +4,13 @@ package lyzzcw.work.component.minio.oss.template;
 import io.minio.*;
 import io.minio.http.Method;
 import lombok.SneakyThrows;
-import lyzzcw.work.component.minio.oss.config.MinioConfiguration;
-import lyzzcw.work.component.minio.oss.entity.FileInfo;
+import lyzzcw.work.component.minio.oss.config.MinioConfig;
 import lyzzcw.work.component.minio.oss.enums.MinioTypeEnum;
-import lyzzcw.work.component.minio.oss.util.MD5Util;
-import lyzzcw.work.component.minio.oss.util.UUID;
 import org.apache.commons.lang3.StringUtils;
-import org.bouncycastle.crypto.prng.RandomGenerator;
 
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * minio工具类
@@ -35,11 +26,11 @@ public class MinioTemplate {
 
     private final MinioClient minioClient;
 
-    public MinioTemplate(MinioClient minioClient, MinioConfiguration configuration) {
+    public MinioTemplate(MinioClient minioClient, MinioConfig config) {
         this.minioClient = minioClient;
-        this.visitPath=configuration.getVisitPath();
-        this.endpoint=configuration.getEndpoint();
-        this.region=configuration.getRegion();
+        this.visitPath=config.getVisitPath();
+        this.endpoint=config.getEndpoint();
+        this.region=config.getRegion();
     }
 
     /**
@@ -70,52 +61,6 @@ public class MinioTemplate {
         } catch (Exception e) {
             throw new RuntimeException("minio异常");
         }
-    }
-
-    /**
-     * @param bucket      桶
-     * @param path        文件路径(包括文件名字)
-     * @retun 原始文件名为空
-     */
-    @SneakyThrows
-    public FileInfo uploadByInputStream(String bucket, String path, InputStream inputStream) {
-        FileInfo fileInfo = new FileInfo();
-        //fileInfo.setFileSourceName(file.getName());
-        fileInfo.setFileType(Optional.ofNullable(path).filter(fileName -> fileName.contains(".")).map(fileName -> fileName.substring(fileName.lastIndexOf(".") + 1)).orElse(""));
-        fileInfo.setFileSize(inputStream.available());
-        String url = upload(bucket, path,inputStream);
-        fileInfo.setFileHash(MD5Util.digestInputStream(inputStream));
-        fileInfo.setFileUrl(url);
-        return fileInfo;
-    }
-
-    /**
-     * @param bucket      桶
-     * @param path        文件路径(包括文件名字)
-     * @param file 文件
-     */
-    @SneakyThrows
-    public FileInfo upload(String bucket, String path, File file) {
-        FileInputStream fileInputStream = null;
-        try {
-            FileInfo fileInfo = new FileInfo();
-            String name = file.getName();
-            fileInputStream = new FileInputStream(file);
-            fileInfo.setFileSourceName(file.getName());
-            fileInfo.setFileType(Optional.ofNullable(name).filter(fileName -> fileName.contains(".")).map(fileName -> fileName.substring(fileName.lastIndexOf(".") + 1)).orElse(""));
-            fileInfo.setFileSize(fileInputStream.available());
-            String url = upload(bucket, (path.endsWith("/")?path:(path+"/")) + UUID.get32UUID()+ (StringUtils.isNotEmpty(fileInfo.getFileType())?"."+fileInfo.getFileType():""),fileInputStream);
-            fileInfo.setFileHash(MD5Util.digestInputStream(fileInputStream));
-            fileInfo.setFileUrl(url);
-            return fileInfo;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }finally {
-            if (null != fileInputStream){
-                fileInputStream.close();
-            }
-        }
-        throw new RuntimeException("上传文件失败");
     }
 
     /**

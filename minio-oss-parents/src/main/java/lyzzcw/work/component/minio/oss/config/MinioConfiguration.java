@@ -1,38 +1,32 @@
 package lyzzcw.work.component.minio.oss.config;
 
-import lombok.Data;
-import lombok.ToString;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import io.minio.MinioClient;
+import lombok.RequiredArgsConstructor;
+import lyzzcw.work.component.minio.oss.template.MinioTemplate;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 
-@Data
-@ToString
-@ConfigurationProperties(prefix = "spring.minio", ignoreInvalidFields = true)
-public class MinioConfiguration {
+@Configuration
+@EnableConfigurationProperties(MinioConfig.class)
+@ComponentScan(basePackages = "lyzzcw.work.component.minio")
+@RequiredArgsConstructor
+public class MinioConfiguration  {
 
-    /**
-     * host+ port
-     */
-    private String endpoint;
+    final MinioConfig config;
 
-    /**
-     * 访问地址
-     */
-    private String visitPath;
+    @Bean
+    public MinioClient createMinioClient() {
+        return MinioClient.builder()
+                .endpoint(this.config.getEndpoint())
+                .credentials(this.config.getAccessKey(), this.config.getSecretKey())
+                .build();
+    }
 
-
-    /**
-     * 账号
-     */
-    private String accessKey;
-
-    /**
-     * 密码
-     */
-    private String secretKey;
-
-    /**
-     * 地区
-     */
-    private String region;
+    @Bean
+    public MinioTemplate createMinioTemplate(MinioClient minioClient) {
+        return new MinioTemplate(minioClient,config);
+    }
 
 }
