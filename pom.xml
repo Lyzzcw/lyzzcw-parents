@@ -15,6 +15,7 @@
         <module>amazon-oss-parents</module>
         <module>minio-oss-parents</module>
         <module>swagger-parents</module>
+        <module>generator-parents</module>
     </modules>
 
     <properties>
