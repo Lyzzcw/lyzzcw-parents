@@ -1,0 +1,28 @@
+MinIO是一个基于Go实现的高性能、兼容S3协议的对象存储。它采用GNU AGPL v3开源协议，项目地址是https://github.com/minio/minio。
+
+引用官网：
+
+MinIO是根据GNU Affero通用公共许可证v3.0发布的高性能对象存储。它与Amazon S3云存储服务兼容。使用MinIO构建用于机器学习，分析和应用程序数据工作负载的高性能基础架构。
+
+官网地址：https://min.io/
+
+文档地址：https://docs.min.io/
+
+使用docker 搭建minio 服务
+
+GNU / Linux和macOS：
+
+docker run -p 9000:9000 \
+  --name minio1 \
+  -v /mnt/data:/data \
+  -e "MINIO_ROOT_USER=AKIAIOSFODNN7EXAMPLE" \
+  -e "MINIO_ROOT_PASSWORD=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
+  minio/minio server /data
+
+windows：
+docker run -p 9000:9000 \
+  --name minio1 \
+  -v D:\data:/data \
+  -e "MINIO_ROOT_USER=AKIAIOSFODNN7EXAMPLE" \
+  -e "MINIO_ROOT_PASSWORD=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" \
+  minio/minio server /data
