@@ -16,6 +16,7 @@
         <module>minio-oss-parents</module>
         <module>swagger-parents</module>
         <module>generator-parents</module>
+        <module>smart-doc-parents</module>
     </modules>
 
     <properties>
