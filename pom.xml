@@ -17,6 +17,7 @@
         <module>swagger-parents</module>
         <module>generator-parents</module>
         <module>smart-doc-parents</module>
+        <module>xxl-job-parents</module>
     </modules>
 
     <properties>
