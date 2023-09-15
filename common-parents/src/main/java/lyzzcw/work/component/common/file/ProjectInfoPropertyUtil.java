@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.object;
+package lyzzcw.work.component.common.file;
 
 import lombok.extern.slf4j.Slf4j;
 

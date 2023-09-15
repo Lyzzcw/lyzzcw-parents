@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.object;
+package lyzzcw.work.component.common.file;
 
 import org.springframework.core.io.ClassPathResource;
 

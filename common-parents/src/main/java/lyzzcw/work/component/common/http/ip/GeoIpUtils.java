@@ -7,7 +7,7 @@ import com.maxmind.geoip2.record.City;
 import com.maxmind.geoip2.record.Country;
 import com.maxmind.geoip2.record.Location;
 import com.maxmind.geoip2.record.Subdivision;
-import lyzzcw.work.component.common.object.FileUtil;
+import lyzzcw.work.component.common.file.FileUtil;
 
 import java.io.File;
 import java.net.InetAddress;
