@@ -169,5 +169,17 @@ public class DateUtils {
         //年结束日期
         LocalDate endYear = localDate.with(TemporalAdjusters.lastDayOfYear());
         System.out.println("endDayOfYear:"+endYear);
+
+        //两个日期对比
+        LocalDateTime start = LocalDateTime.now();
+        LocalDateTime now = LocalDateTime.now();
+        start.isAfter(now);//在当前时间之后是false
+        start.isBefore(now);//在当前时间之前是true
+
+        Duration duration = Duration.between(start,now);
+        long days = duration.toDays();//相差的天数
+        long hours = duration.toHours();//相差的小时数
+        long minutes = duration.toMinutes();//相差的分钟数
+
     }
 }
