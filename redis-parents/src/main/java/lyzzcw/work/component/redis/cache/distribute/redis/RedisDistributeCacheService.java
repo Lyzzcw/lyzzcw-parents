@@ -32,7 +32,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -74,6 +76,37 @@ public class RedisDistributeCacheService implements DistributeCacheService {
     @Override
     public String get(String key) {
         return redisTemplate.opsForValue().get(key);
+    }
+
+    @Override
+    public <T> T getObject(String key, Class<T> targetClass) {
+        Object result = redisTemplate.opsForValue().get(key);
+        if (result == null) {
+            return null;
+        }
+        try {
+            return JSONUtil.toBean(result.toString(), targetClass);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    @Override
+    public List<String> multiGet(Collection<String> keys) {
+        return redisTemplate.opsForValue().multiGet(keys);
+    }
+
+    @Override
+    public Set<String> keys(String pattern) {
+        return redisTemplate.keys(pattern);
+    }
+
+    @Override
+    public Boolean delete(String key) {
+        if (StrUtil.isEmpty(key)) {
+            return false;
+        }
+        return redisTemplate.delete(key);
     }
 
     @Override

@@ -23,7 +23,9 @@ import lyzzcw.work.component.redis.cache.data.CacheData;
 import lyzzcw.work.component.redis.cache.distribute.conversion.TypeConversion;
 
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
@@ -65,6 +67,36 @@ public interface DistributeCacheService {
      * @return 缓存value
      */
     String get(String key);
+
+    /**
+     * 获取缓存数据
+     * @param key 缓存的key
+     * @param targetClass 目标对象Class
+     * @param <T> 泛型
+     * @return 返回的数据
+     */
+    <T> T getObject(String key, Class<T> targetClass);
+
+    /**
+     * 根据key列表批量获取value
+     * @param keys key列表
+     * @return value集合
+     */
+    List<String> multiGet(Collection<String> keys);
+
+    /**
+     * 根据正则表达式获取所有的key集合
+     * @param pattern 正则表达式
+     * @return key的集合
+     */
+    Set<String> keys(String pattern);
+
+    /**
+     * 删除指定的key
+     * @param key key
+     * @return 删除是否成功
+     */
+    Boolean delete(String key);
 
     /**
      * 防止缓存穿透
