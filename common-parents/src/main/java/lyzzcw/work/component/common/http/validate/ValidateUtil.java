@@ -1,4 +1,4 @@
-package lyzzcw.work.component.domain.common.validate;
+package lyzzcw.work.component.common.http.validate;
 
 import cn.hutool.core.collection.CollectionUtil;
 

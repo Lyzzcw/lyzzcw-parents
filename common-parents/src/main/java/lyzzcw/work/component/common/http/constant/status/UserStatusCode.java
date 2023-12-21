@@ -1,6 +1,7 @@
-package lyzzcw.work.component.domain.common.constant;
+package lyzzcw.work.component.common.http.constant.status;
 
 import lombok.AllArgsConstructor;
+import lyzzcw.work.component.domain.common.constant.IStatusCode;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,10 +11,10 @@ import lombok.AllArgsConstructor;
  * Description: No Description
  */
 @AllArgsConstructor
-public enum DeviceStatusCode implements IStatusCode {
-    ERR_3000(3000,"设备id有误"),
-    ERR_3001(3001,"设备名称格式错误"),
-    ERR_3002(3002,"设备MAC地址无效")
+public enum UserStatusCode implements IStatusCode {
+    ERR_2000(2000,"用户信息不存在"),
+
+    ERR_2001(2001,"用户昵称格式错误")
     ;
     // 状态码
     private Integer status;

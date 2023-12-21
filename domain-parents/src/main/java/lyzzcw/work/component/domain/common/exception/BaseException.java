@@ -2,8 +2,8 @@ package lyzzcw.work.component.domain.common.exception;
 
 import lombok.Data;
 import lyzzcw.work.component.domain.common.constant.BaseStatusCode;
+import lyzzcw.work.component.domain.common.constant.HttpStatus;
 import lyzzcw.work.component.domain.common.constant.IStatusCode;
-import org.springframework.http.HttpStatus;
 
 /**
  * Created with IntelliJ IDEA.

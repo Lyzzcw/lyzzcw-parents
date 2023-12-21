@@ -1,4 +1,4 @@
-package lyzzcw.work.component.domain.common.validate.checkmodel;
+package lyzzcw.work.component.common.http.validate.checkmodel;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

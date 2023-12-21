@@ -1,4 +1,4 @@
-package lyzzcw.work.component.domain.common.entity.response;
+package lyzzcw.work.component.common.http.entity.response;
 
 
 import lyzzcw.work.component.domain.common.constant.BaseStatusCode;

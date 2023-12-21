@@ -1,4 +1,4 @@
-package lyzzcw.work.component.domain.common.validate.group;
+package lyzzcw.work.component.common.http.validate.group;
 
 /**
  * Created with IntelliJ IDEA.

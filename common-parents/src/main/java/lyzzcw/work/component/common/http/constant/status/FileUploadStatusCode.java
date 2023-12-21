@@ -1,6 +1,7 @@
-package lyzzcw.work.component.domain.common.constant;
+package lyzzcw.work.component.common.http.constant.status;
 
 import lombok.AllArgsConstructor;
+import lyzzcw.work.component.domain.common.constant.IStatusCode;
 
 /**
  * Created with IntelliJ IDEA.

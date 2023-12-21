@@ -1,4 +1,4 @@
-package lyzzcw.work.component.domain.common.entity.response;
+package lyzzcw.work.component.common.http.entity.response;
 
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;

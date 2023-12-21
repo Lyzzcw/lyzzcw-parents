@@ -1,4 +1,4 @@
-package lyzzcw.work.component.domain.common.validate.checkmodel;
+package lyzzcw.work.component.common.http.validate.checkmodel;
 
 /**
  * Created with IntelliJ IDEA.

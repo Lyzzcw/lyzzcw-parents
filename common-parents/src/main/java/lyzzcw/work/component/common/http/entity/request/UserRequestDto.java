@@ -1,12 +1,10 @@
-package lyzzcw.work.component.domain.common.entity.request;
+package lyzzcw.work.component.common.http.entity.request;
 
 
 import lombok.Data;
-import lyzzcw.work.component.domain.common.validate.checkmodel.CaseCheck;
-import lyzzcw.work.component.domain.common.validate.checkmodel.CaseMode;
-import lyzzcw.work.component.domain.common.validate.group.UserRequestDtoAddValidate;
-import lyzzcw.work.component.domain.common.validate.group.UserRequestDtoSimpleValidate;
-import lyzzcw.work.component.domain.common.validate.group.UserRequestDtoUpdateValidate;
+import lyzzcw.work.component.common.http.validate.group.UserRequestDtoAddValidate;
+import lyzzcw.work.component.common.http.validate.group.UserRequestDtoSimpleValidate;
+import lyzzcw.work.component.common.http.validate.group.UserRequestDtoUpdateValidate;
 
 import javax.validation.constraints.*;
 
@@ -20,7 +18,6 @@ import javax.validation.constraints.*;
 @Data
 public class UserRequestDto {
     @NotBlank(message = "姓名不能为空",groups = UserRequestDtoSimpleValidate.class)
-    @CaseCheck(value = CaseMode.LOWER,message = "用户名必须为小写",groups = UserRequestDtoSimpleValidate.class)
     private String userName;
 
     @NotBlank(message = "密码不能为空",groups = UserRequestDtoAddValidate.class)
