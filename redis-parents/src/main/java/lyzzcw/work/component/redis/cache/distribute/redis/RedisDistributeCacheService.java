@@ -68,6 +68,11 @@ public class RedisDistributeCacheService implements DistributeCacheService {
     }
 
     @Override
+    public Boolean expire(String key, long timeout, TimeUnit unit) {
+        return redisTemplate.expire(key, timeout, unit);
+    }
+
+    @Override
     public void setWithLogicalExpire(String key, Object value, Long timeout, TimeUnit unit) {
         CacheData redisData = new CacheData(value, LocalDateTime.now().plusSeconds(unit.toSeconds(timeout)));
         redisTemplate.opsForValue().set(key, JSONUtil.toJsonStr(redisData));

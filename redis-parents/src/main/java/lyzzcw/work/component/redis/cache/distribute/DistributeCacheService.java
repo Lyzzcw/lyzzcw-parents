@@ -53,6 +53,15 @@ public interface DistributeCacheService {
     void set(String key, Object value, Long timeout, TimeUnit unit);
 
     /**
+     * 设置缓存过期
+     * @param key 缓存key
+     * @param timeout 过期时长
+     * @param unit 时间单位
+     * @return 设置过期时间是否成功
+     */
+    Boolean expire(String key, final long timeout, final TimeUnit unit);
+
+    /**
      * 保存缓存时设置逻辑过期时间
      * @param key 缓存key
      * @param value 缓存value
