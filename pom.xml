@@ -19,6 +19,7 @@
         <module>smart-doc-parents</module>
         <module>xxl-job-parents</module>
         <module>mq-parents</module>
+        <module>domain-parents</module>
     </modules>
 
     <properties>
