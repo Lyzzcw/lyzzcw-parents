@@ -20,6 +20,7 @@
         <module>xxl-job-parents</module>
         <module>mq-parents</module>
         <module>domain-parents</module>
+        <module>spi-parents</module>
     </modules>
 
     <properties>

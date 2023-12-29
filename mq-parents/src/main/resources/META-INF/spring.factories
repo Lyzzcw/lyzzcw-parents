@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  lyzzcw.work.component.mq.config.MqConfig
