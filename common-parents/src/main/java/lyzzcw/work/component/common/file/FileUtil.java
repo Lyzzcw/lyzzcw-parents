@@ -1,8 +1,8 @@
 package lyzzcw.work.component.common.file;
 
 import lombok.extern.slf4j.Slf4j;
-import lyzzcw.work.component.common.object.EncryptUtil;
-import lyzzcw.work.component.common.object.StringUtil;
+import lyzzcw.work.component.common.utils.EncryptUtil;
+import lyzzcw.work.component.common.utils.StringUtil;
 
 import java.io.File;
 import java.io.IOException;

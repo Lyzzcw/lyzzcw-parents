@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.object;
+package lyzzcw.work.component.common.utils;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

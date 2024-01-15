@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.id;
+package lyzzcw.work.component.common.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.object;
+package lyzzcw.work.component.common.utils;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;

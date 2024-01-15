@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.object;
+package lyzzcw.work.component.common.utils;
 
 import java.io.File;
 import java.io.FileInputStream;

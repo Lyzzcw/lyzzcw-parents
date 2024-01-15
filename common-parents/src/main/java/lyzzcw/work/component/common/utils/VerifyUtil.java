@@ -1,4 +1,4 @@
-package lyzzcw.work.component.common.object;
+package lyzzcw.work.component.common.utils;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import lyzzcw.work.component.common.id.ChinaIDVerify;
 
 /**
  * Created with IntelliJ IDEA.
