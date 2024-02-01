@@ -12,7 +12,6 @@ spring:
         max-idle: 8
         min-idle: 0
         max-wait: 5000
-
 cache:
   type:
     local: guava
@@ -20,10 +19,8 @@ cache:
 
 distribute:
   type:
+    enable: true
+    # single or cluster
+    arrange: single
     lock: redisson
     semaphore: redisson
-
-
-redis:
-  arrange:
-    type: single # single or cluster

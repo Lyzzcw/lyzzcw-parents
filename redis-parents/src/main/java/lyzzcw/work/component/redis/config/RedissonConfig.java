@@ -20,6 +20,7 @@ import java.util.Arrays;
  * @description Redisson配置
  */
 @Configuration
+@ConditionalOnProperty(name = "distribute.type.enable",havingValue = "true")
 public class RedissonConfig {
 
     @Value("#{'redis://'.concat('${spring.redis.host}').concat(':').concat('${spring.redis.port}')}")
@@ -32,7 +33,7 @@ public class RedissonConfig {
     private int database;
 
     @Bean(name = "redissonClient")
-    @ConditionalOnProperty(name = "redis.arrange.type", havingValue = "single")
+    @ConditionalOnProperty(name = "distribute.type.arrange", havingValue = "single")
     public RedissonClient singleRedissonClient() {
         Config config = new Config();
         SingleServerConfig singleServerConfig = config.useSingleServer();
@@ -44,7 +45,7 @@ public class RedissonConfig {
     }
 
     @Bean(name = "redissonClient")
-    @ConditionalOnProperty(name = "redis.arrange.type", havingValue = "cluster")
+    @ConditionalOnProperty(name = "distribute.type.arrange", havingValue = "cluster")
     public RedissonClient clusterRedissonClient(){
         Config config = new Config();
         ClusterServersConfig clusterServersConfig = config.useClusterServers();
