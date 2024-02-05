@@ -24,6 +24,8 @@
         <guava.version>30.1.1-jre</guava.version>
         <commons-collections4.version>4.4</commons-collections4.version>
         <commons-beanutils.version>1.9.4</commons-beanutils.version>
+        <okhttp3.version>4.10.0</okhttp3.version>
+        <commons-imaging.version>1.0-alpha3</commons-imaging.version>
     </properties>
 
 
@@ -113,13 +115,12 @@
             </dependency>
 
 
-            <!-- OKHttpUtil -->
-            <dependency>
-                <groupId>io.github.admin4j</groupId>
-                <artifactId>http</artifactId>
-                <version>0.4.0</version>
-            </dependency>
-
+            <!-- OKHttpUtil 版本太低-->
+<!--            <dependency>-->
+<!--                <groupId>io.github.admin4j</groupId>-->
+<!--                <artifactId>http</artifactId>-->
+<!--                <version>0.4.0</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
@@ -176,6 +177,12 @@
             <artifactId>commons-beanutils</artifactId>
             <version>${commons-beanutils.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-imaging</artifactId>
+            <version>${commons-imaging.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.aventrix.jnanoid</groupId>
             <artifactId>jnanoid</artifactId>
@@ -202,9 +209,14 @@
             <artifactId>core</artifactId>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>io.github.admin4j</groupId>-->
+<!--            <artifactId>http</artifactId>-->
+<!--        </dependency>-->
         <dependency>
-            <groupId>io.github.admin4j</groupId>
-            <artifactId>http</artifactId>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp3.version}</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

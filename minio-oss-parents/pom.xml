@@ -17,6 +17,7 @@
         <version.minio>8.5.1</version.minio>
         <version.jackson>2.13.0</version.jackson>
         <spring-boot.version>2.7.5</spring-boot.version>
+        <okhttp3.version>4.10.0</okhttp3.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -27,6 +28,14 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- fixme -->
+            <!--在项目的根pom中，引入okhttp，指定版本，这么做会覆盖spring-boot-dependencies的版本设置
+            强制指定版本，优先级高于spring-boot-dependencies-->
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp3.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
     <dependencies>
@@ -34,6 +43,17 @@
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>${version.minio}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>okhttp</artifactId>
+                    <groupId>com.squareup.okhttp3</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>${okhttp3.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

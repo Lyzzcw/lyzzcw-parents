@@ -31,7 +31,7 @@ public class MinioConfig{
     private String secretKey;
 
     /**
-     * 地区
+     * 当前服务器的地区
      */
     private String region;
 

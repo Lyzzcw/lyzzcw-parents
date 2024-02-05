@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 @EnableConfigurationProperties(MinioConfig.class)
-@ComponentScan(basePackages = "lyzzcw.work.component.minio")
+@ComponentScan(basePackages = "lyzzcw.work.component.minio.oss")
 @RequiredArgsConstructor
 public class MinioConfiguration  {
 

@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  lyzzcw.work.component.minio.oss.config.MinioConfig
+  lyzzcw.work.component.minio.oss.config.MinioConfiguration

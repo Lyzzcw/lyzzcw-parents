@@ -22,7 +22,7 @@ public class RedisListService {
     private StringRedisTemplate stringRedisTemplate;
 
     /**
-     * 往 key 这个list放入一个value
+     * 往 key 这个list头部放入一个value
      *
      * @param key
      * @param value
@@ -31,6 +31,15 @@ public class RedisListService {
         stringRedisTemplate.opsForList().leftPush(key, value);
     }
 
+    /**
+     * 往 key 这个list尾部放入一个value
+     *
+     * @param key   钥匙
+     * @param value 价值
+     */
+    public void rightPush(String key, String value) {
+        stringRedisTemplate.opsForList().rightPush(key, value);
+    }
     /**
      * 将value放在key这个list中targetValue的右侧
      *
@@ -89,6 +98,26 @@ public class RedisListService {
     }
 
     /**
+     * 右弹出
+     *
+     * @param key 钥匙
+     * @return {@link String}
+     */
+    public String rightPop(String key) {
+        return stringRedisTemplate.opsForList().rightPop(key);
+    }
+
+    /**
+     * 大小
+     *
+     * @param key 钥匙
+     * @return {@link Long}
+     */
+    public Long size(String key) {
+        return stringRedisTemplate.opsForList().size(key);
+    }
+
+    /**
      * 获取key这个list中第几个元素，下标从0开始
      * 如果index传入的是符数，则从右往左数，下标从-1开始
      *
@@ -112,6 +141,16 @@ public class RedisListService {
      */
     public List<String> range(String key, int start, int end) {
         return stringRedisTemplate.opsForList().range(key, start, end);
+    }
+
+
+    /**
+     * 获取key从start到end之间的所有元素
+     *
+     * @param key 钥匙
+     */
+    public List<String> rangeAll(String key){
+        return stringRedisTemplate.opsForList().range(key,0,-1);
     }
 
     /**
@@ -146,4 +185,6 @@ public class RedisListService {
             stringRedisTemplate.opsForList().rightPopAndLeftPush(key1, key2, timeout, TimeUnit.SECONDS);
         }
     }
+
+
 }

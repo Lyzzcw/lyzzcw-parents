@@ -1,26 +1,20 @@
 package lyzzcw.work.component.common.http.okhttp;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
+import com.alibaba.fastjson2.JSONObject;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import io.github.admin4j.http.HttpRequest;
-import io.github.admin4j.http.core.HttpHeaderKey;
-import io.github.admin4j.http.core.Pair;
-import io.github.admin4j.http.util.HttpJsonUtil;
-import io.github.admin4j.http.util.HttpUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.HashMap;
+import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -42,65 +36,160 @@ public class OKHttpDemo {
 
     @Test
     public void get() {
-        Response response = HttpUtil.get("https://github.com/search", Pair.of("q", "okhttp"));
-        System.out.println("response = " + response);
+        final Request request = new Request.Builder()
+                .url("http://XXXX.com")
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+                .addHeader("Host", "XXXX.com")
+                .get()
+                .build();
 
-        //返回格式为JSON的 可以使用 HttpJsonUtil 自动返回JsonObject
-        JSONObject object = HttpJsonUtil.get("https://github.com/search",
-                Pair.of("q", "http"),
-                Pair.of("username", "agonie201218"));
-        System.out.println("object = " + object);
+        Call call = client.newCall(request);
+        //异步操作
+        call.enqueue(new Callback() {
+            //请求错误回调方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("连接失败");
+            }
 
-        //HttpRequest 链式请求
-        Response response1 = HttpRequest.get("https://search.gitee.com/?skin=rec&type=repository")
-                .queryMap("q", "admin4j")
-                .header(HttpHeaderKey.USER_AGENT, "admin4j")
-                .execute();
-        System.out.println("response = " + response1);
+            //异步请求(非主线程)
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.code() == 200) {
+                    System.out.println(response.body().string());
+                }
+            }
+        });
+
     }
 
     @Test
     public void post() {
         // JSON 格式的body
-        Response post = HttpUtil.post("https://oapi.dingtalk.com/robot/send?access_token=27f5954ab60ea8b2e431ae9101b1289c138e85aa6eb6e3940c35ee13ff8b6335", "{\"msgtype\": \"text\",\"text\": {\"content\":\"【反馈提醒】我就是我, 是不一样的烟火\"}}");
-        System.out.println("post = " + post);
+
+        //post方式提交的数据
+        FormBody formBody = new FormBody.Builder()
+                .add("t", "test")
+                .build();
+
+        final Request request = new Request.Builder()
+                .url("http://XXX.com")//请求的url
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+                .addHeader("Host", "XXXX.com")
+                .post(formBody)
+                .build();
+
+
+        //创建/Call
+        Call call = client.newCall(request);
+        //加入队列 异步操作
+        call.enqueue(new Callback() {
+            //请求错误回调方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("连接失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.code() == 200) {
+                    System.out.println(response.body().string());
+                }
+            }
+        });
+
     }
 
     @Test
     public void Form() {
         // form 请求
-        Map<String, Object> formParams = new HashMap<>(16);
-        formParams.put("username", "admin");
-        formParams.put("password", "admin123");
-        Response response = HttpUtil.postForm("http://192.168.1.13:9100/auth/login",
-                formParams
-        );
-        System.out.println("response = " + response);
 
-        // post form
-        Response response1 = HttpRequest.get("http://192.168.1.13:9100/auth/login")
-                .queryMap("q", "admin4j")
-                .header(HttpHeaderKey.USER_AGENT, "admin4j")
-                .form("username", "admin")
-                .form("password", "admin123")
-                .execute();
-        System.out.println("response = " + response1);
+        //post方式提交的数据
+        FormBody formBody = new FormBody.Builder()
+                .add("t", "test")
+                .build();
+
+        final Request request = new Request.Builder()
+                .url("http://XXX.com")//请求的url
+                .addHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.111 Safari/537.36")
+                .addHeader("Host", "XXXX.com")
+                .post(formBody)
+                .build();
+
+
+        //创建/Call
+        Call call = client.newCall(request);
+        //加入队列 异步操作
+        call.enqueue(new Callback() {
+            //请求错误回调方法
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.out.println("连接失败");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if (response.code() == 200) {
+                    System.out.println(response.body().string());
+                }
+            }
+        });
+
     }
 
     @Test
-    public void fileUpLoad() {
-        File file = new File("C:\\Users\\andanyang\\Downloads\\Sql.txt");
-        Map<String, Object> formParams = new HashMap<>();
-        formParams.put("key", "test");
-        formParams.put("file", file);
-        formParams.put("token", "WXyUseb-D4sCum-EvTIDYL-mEehwDtrSBg-Zca7t:qgOcR2gUoKmxt-VnsNb657Oatzo=:eyJzY29wZSI6InpoYW56aGkiLCJkZWFkbGluZSI6MTY2NTMwNzUxNH0=");
-        Response response = HttpUtil.upload("https://upload.qiniup.com/", formParams);
-        System.out.println(response);
+    public void fileUpLoad() throws IOException {
+        File fileToUpload = new File("path/to/your/file.txt");
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", fileToUpload.getName(),
+                        RequestBody.create(MediaType.parse("application/octet-stream"), fileToUpload))
+                .build();
+
+        Request request = new Request.Builder()
+                .url("https://your-api-endpoint.com/upload")
+                .post(requestBody)
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+            System.out.println("File upload response: " + response.body().string());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void fileDownLoad() throws IOException {
-        HttpUtil.down("https://gitee.com/admin4j/common-http", "path/");
+        Request request = new Request.Builder()
+                .url("https://your-api-endpoint.com/download/file.txt")
+                .build();
+
+        try {
+            Response response = client.newCall(request).execute();
+
+            if (response.isSuccessful()) {
+                InputStream inputStream = response.body().byteStream();
+                FileOutputStream fileOutputStream = new FileOutputStream("path/to/save/file.txt");
+
+                byte[] buffer = new byte[4096];
+                int bytesRead;
+
+                while ((bytesRead = inputStream.read(buffer)) != -1) {
+                    fileOutputStream.write(buffer, 0, bytesRead);
+                }
+
+                fileOutputStream.close();
+                inputStream.close();
+
+                System.out.println("File download complete.");
+            } else {
+                System.out.println("File download failed. Response code: " + response.code());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
@@ -114,8 +203,8 @@ public class OKHttpDemo {
         System.out.println(response);
 
 
-        EbayInventoryClient ebayInventoryClient = new EbayInventoryClient(1L);
-        JSONObject jsonObject = ebayInventoryClient.inventoryItem(0, 10);
+//        EbayInventoryClient ebayInventoryClient = new EbayInventoryClient(1L);
+//        JSONObject jsonObject = ebayInventoryClient.inventoryItem(0, 10);
 
     }
 
@@ -1603,7 +1692,7 @@ public class OKHttpDemo {
             }
             map.put(city,countys);
         }
-        System.out.println(JSONObject.toJSONString(map));
+        System.out.println(JSON.toJSONString(map));
 
         String s = "{{\"adcode\":\"130600\",\"citycode\":\"0312\",\"level\":\"2\",\"name\":\"保定市\"}:[{\"adcode\":\"130636\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"顺平县\"},{\"adcode\":\"130632\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"安新县\"},{\"adcode\":\"130683\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"安国市\"},{\"adcode\":\"130623\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"涞水县\"},{\"adcode\":\"130624\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"阜平县\"},{\"adcode\":\"130631\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"望都县\"},{\"adcode\":\"130627\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"唐县\"},{\"adcode\":\"130684\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"高碑店市\"},{\"adcode\":\"130626\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"定兴县\"},{\"adcode\":\"130629\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"容城县\"},{\"adcode\":\"130638\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"雄县\"},{\"adcode\":\"130637\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"博野县\"},{\"adcode\":\"130634\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"曲阳县\"},{\"adcode\":\"130635\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"蠡县\"},{\"adcode\":\"130628\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"高阳县\"},{\"adcode\":\"130681\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"涿州市\"},{\"adcode\":\"130630\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"涞源县\"},{\"adcode\":\"130607\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"满城区\"},{\"adcode\":\"130602\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"竞秀区\"},{\"adcode\":\"130606\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"莲池区\"},{\"adcode\":\"130608\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"清苑区\"},{\"adcode\":\"130682\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"定州市\"},{\"adcode\":\"130609\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"徐水区\"},{\"adcode\":\"130633\",\"citycode\":\"0312\",\"level\":\"3\",\"name\":\"易县\"}],{\"adcode\":\"130100\",\"citycode\":\"0311\",\"level\":\"2\",\"name\":\"石家庄市\"}:[{\"adcode\":\"130126\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"灵寿县\"},{\"adcode\":\"130183\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"晋州市\"},{\"adcode\":\"130132\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"元氏县\"},{\"adcode\":\"130127\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"高邑县\"},{\"adcode\":\"130123\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"正定县\"},{\"adcode\":\"130184\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"新乐市\"},{\"adcode\":\"130181\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"辛集市\"},{\"adcode\":\"130121\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"井陉县\"},{\"adcode\":\"130107\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"井陉矿区\"},{\"adcode\":\"130128\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"深泽县\"},{\"adcode\":\"130133\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"赵县\"},{\"adcode\":\"130125\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"行唐县\"},{\"adcode\":\"130105\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"新华区\"},{\"adcode\":\"130110\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"鹿泉区\"},{\"adcode\":\"130131\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"平山县\"},{\"adcode\":\"130104\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"桥西区\"},{\"adcode\":\"130111\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"栾城区\"},{\"adcode\":\"130108\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"裕华区\"},{\"adcode\":\"130109\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"藁城区\"},{\"adcode\":\"130102\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"长安区\"},{\"adcode\":\"130130\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"无极县\"},{\"adcode\":\"130129\",\"citycode\":\"0311\",\"level\":\"3\",\"name\":\"赞皇县\"}],{\"adcode\":\"130300\",\"citycode\":\"0335\",\"level\":\"2\",\"name\":\"秦皇岛市\"}:[{\"adcode\":\"130324\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"卢龙县\"},{\"adcode\":\"130303\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"山海关区\"},{\"adcode\":\"130302\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"海港区\"},{\"adcode\":\"130306\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"抚宁区\"},{\"adcode\":\"130322\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"昌黎县\"},{\"adcode\":\"130304\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"北戴河区\"},{\"adcode\":\"130321\",\"citycode\":\"0335\",\"level\":\"3\",\"name\":\"青龙满族自治县\"}],{\"adcode\":\"130400\",\"citycode\":\"0310\",\"level\":\"2\",\"name\":\"邯郸市\"}:[{\"adcode\":\"130407\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"肥乡区\"},{\"adcode\":\"130431\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"鸡泽县\"},{\"adcode\":\"130408\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"永年区\"},{\"adcode\":\"130433\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"馆陶县\"},{\"adcode\":\"130423\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"临漳县\"},{\"adcode\":\"130434\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"魏县\"},{\"adcode\":\"130406\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"峰峰矿区\"},{\"adcode\":\"130427\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"磁县\"},{\"adcode\":\"130402\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"邯山区\"},{\"adcode\":\"130425\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"大名县\"},{\"adcode\":\"130403\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"丛台区\"},{\"adcode\":\"130404\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"复兴区\"},{\"adcode\":\"130435\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"曲周县\"},{\"adcode\":\"130430\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"邱县\"},{\"adcode\":\"130481\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"武安市\"},{\"adcode\":\"130426\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"涉县\"},{\"adcode\":\"130424\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"成安县\"},{\"adcode\":\"130432\",\"citycode\":\"0310\",\"level\":\"3\",\"name\":\"广平县\"}],{\"adcode\":\"130500\",\"citycode\":\"0319\",\"level\":\"2\",\"name\":\"邢台市\"}:[{\"adcode\":\"130524\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"柏乡县\"},{\"adcode\":\"130581\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"南宫市\"},{\"adcode\":\"130530\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"新河县\"},{\"adcode\":\"130531\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"广宗县\"},{\"adcode\":\"130534\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"清河县\"},{\"adcode\":\"130506\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"南和区\"},{\"adcode\":\"130528\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"宁晋县\"},{\"adcode\":\"130533\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"威县\"},{\"adcode\":\"130535\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"临西县\"},{\"adcode\":\"130582\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"沙河市\"},{\"adcode\":\"130523\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"内丘县\"},{\"adcode\":\"130502\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"襄都区\"},{\"adcode\":\"130505\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"任泽区\"},{\"adcode\":\"130503\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"信都区\"},{\"adcode\":\"130522\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"临城县\"},{\"adcode\":\"130532\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"平乡县\"},{\"adcode\":\"130529\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"巨鹿县\"},{\"adcode\":\"130525\",\"citycode\":\"0319\",\"level\":\"3\",\"name\":\"隆尧县\"}],{\"adcode\":\"130700\",\"citycode\":\"0313\",\"level\":\"2\",\"name\":\"张家口市\"}:[{\"adcode\":\"130723\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"康保县\"},{\"adcode\":\"130732\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"赤城县\"},{\"adcode\":\"130706\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"下花园区\"},{\"adcode\":\"130709\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"崇礼区\"},{\"adcode\":\"130731\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"涿鹿县\"},{\"adcode\":\"130702\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"桥东区\"},{\"adcode\":\"130705\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"宣化区\"},{\"adcode\":\"130726\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"蔚县\"},{\"adcode\":\"130728\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"怀安县\"},{\"adcode\":\"130703\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"桥西区\"},{\"adcode\":\"130725\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"尚义县\"},{\"adcode\":\"130708\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"万全区\"},{\"adcode\":\"130722\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"张北县\"},{\"adcode\":\"130730\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"怀来县\"},{\"adcode\":\"130727\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"阳原县\"},{\"adcode\":\"130724\",\"citycode\":\"0313\",\"level\":\"3\",\"name\":\"沽源县\"}],{\"adcode\":\"131000\",\"citycode\":\"0316\",\"level\":\"2\",\"name\":\"廊坊市\"}:[{\"adcode\":\"131028\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"大厂回族自治县\"},{\"adcode\":\"131026\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"文安县\"},{\"adcode\":\"131082\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"三河市\"},{\"adcode\":\"131081\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"霸州市\"},{\"adcode\":\"131022\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"固安县\"},{\"adcode\":\"131025\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"大城县\"},{\"adcode\":\"131023\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"永清县\"},{\"adcode\":\"131002\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"安次区\"},{\"adcode\":\"131024\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"香河县\"},{\"adcode\":\"131003\",\"citycode\":\"0316\",\"level\":\"3\",\"name\":\"广阳区\"}],{\"adcode\":\"131100\",\"citycode\":\"0318\",\"level\":\"2\",\"name\":\"衡水市\"}:[{\"adcode\":\"131102\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"桃城区\"},{\"adcode\":\"131182\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"深州市\"},{\"adcode\":\"131128\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"阜城县\"},{\"adcode\":\"131103\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"冀州区\"},{\"adcode\":\"131126\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"故城县\"},{\"adcode\":\"131122\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"武邑县\"},{\"adcode\":\"131123\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"武强县\"},{\"adcode\":\"131121\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"枣强县\"},{\"adcode\":\"131127\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"景县\"},{\"adcode\":\"131124\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"饶阳县\"},{\"adcode\":\"131125\",\"citycode\":\"0318\",\"level\":\"3\",\"name\":\"安平县\"}],{\"adcode\":\"130800\",\"citycode\":\"0314\",\"level\":\"2\",\"name\":\"承德市\"}:[{\"adcode\":\"130828\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"围场满族蒙古族自治县\"},{\"adcode\":\"130826\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"丰宁满族自治县\"},{\"adcode\":\"130825\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"隆化县\"},{\"adcode\":\"130827\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"宽城满族自治县\"},{\"adcode\":\"130804\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"鹰手营子矿区\"},{\"adcode\":\"130824\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"滦平县\"},{\"adcode\":\"130803\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"双滦区\"},{\"adcode\":\"130821\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"承德县\"},{\"adcode\":\"130802\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"双桥区\"},{\"adcode\":\"130822\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"兴隆县\"},{\"adcode\":\"130881\",\"citycode\":\"0314\",\"level\":\"3\",\"name\":\"平泉市\"}],{\"adcode\":\"130200\",\"citycode\":\"0315\",\"level\":\"2\",\"name\":\"唐山市\"}:[{\"adcode\":\"130283\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"迁安市\"},{\"adcode\":\"130225\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"乐亭县\"},{\"adcode\":\"130229\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"玉田县\"},{\"adcode\":\"130202\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"路南区\"},{\"adcode\":\"130209\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"曹妃甸区\"},{\"adcode\":\"130224\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"滦南县\"},{\"adcode\":\"130205\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"开平区\"},{\"adcode\":\"130204\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"古冶区\"},{\"adcode\":\"130227\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"迁西县\"},{\"adcode\":\"130284\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"滦州市\"},{\"adcode\":\"130281\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"遵化市\"},{\"adcode\":\"130207\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"丰南区\"},{\"adcode\":\"130208\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"丰润区\"},{\"adcode\":\"130203\",\"citycode\":\"0315\",\"level\":\"3\",\"name\":\"路北区\"}],{\"adcode\":\"130900\",\"citycode\":\"0317\",\"level\":\"2\",\"name\":\"沧州市\"}:[{\"adcode\":\"130982\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"任丘市\"},{\"adcode\":\"130924\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"海兴县\"},{\"adcode\":\"130923\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"东光县\"},{\"adcode\":\"130928\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"吴桥县\"},{\"adcode\":\"130983\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"黄骅市\"},{\"adcode\":\"130902\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"新华区\"},{\"adcode\":\"130921\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"沧县\"},{\"adcode\":\"130903\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"运河区\"},{\"adcode\":\"130925\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"盐山县\"},{\"adcode\":\"130930\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"孟村回族自治县\"},{\"adcode\":\"130927\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"南皮县\"},{\"adcode\":\"130922\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"青县\"},{\"adcode\":\"130926\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"肃宁县\"},{\"adcode\":\"130984\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"河间市\"},{\"adcode\":\"130981\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"泊头市\"},{\"adcode\":\"130929\",\"citycode\":\"0317\",\"level\":\"3\",\"name\":\"献县\"}]}";
     }

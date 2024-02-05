@@ -47,6 +47,14 @@ public interface DistributeCacheService {
     Boolean expire(String key, final long timeout, final TimeUnit unit);
 
     /**
+     * 存在
+     *
+     * @param key 钥匙
+     * @return {@link Boolean}
+     */
+    Boolean exists(String key);
+
+    /**
      * 保存缓存时设置逻辑过期时间
      * @param key 缓存key
      * @param value 缓存value

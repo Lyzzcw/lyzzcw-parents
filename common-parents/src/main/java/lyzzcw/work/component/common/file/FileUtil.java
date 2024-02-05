@@ -3,7 +3,12 @@ package lyzzcw.work.component.common.file;
 import lombok.extern.slf4j.Slf4j;
 import lyzzcw.work.component.common.utils.EncryptUtil;
 import lyzzcw.work.component.common.utils.StringUtil;
+import org.apache.commons.imaging.ImageFormat;
+import org.apache.commons.imaging.ImageInfo;
+import org.apache.commons.imaging.ImageReadException;
+import org.apache.commons.imaging.Imaging;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -152,5 +157,25 @@ public class FileUtil {
         }
 
         return result;
+    }
+
+    /**
+     * 检查图像格式
+     *
+     * @param imageBytes 图像字节
+     * @return {@link String}
+     */
+    public static String checkImageFormat(byte[] imageBytes){
+        try (InputStream inputStream = new ByteArrayInputStream(imageBytes)) {
+            ImageInfo imageInfo = Imaging.getImageInfo(inputStream, null);
+            // 获取图片格式信息
+            ImageFormat imageFormat = imageInfo.getFormat();
+            if (imageFormat != null) {
+                return imageFormat.getName();
+            }
+        } catch (IOException | ImageReadException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
