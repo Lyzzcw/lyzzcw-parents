@@ -125,8 +125,9 @@ public class FileUtil {
     }
 
     /**
+     * 格式 data:image/jpeg;base64,/9j/4AAQSkxxxxxxx
      * Base64图片内容保存为文件
-     * @param pImageString 图片内容
+     * @param pImageString 图片内容 不含 data:image/jpeg;base64 内容
      * @param pImagePath 文件路径
      * @return true为成功
      */
