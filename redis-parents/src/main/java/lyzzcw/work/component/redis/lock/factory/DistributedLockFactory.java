@@ -14,4 +14,12 @@ public interface DistributedLockFactory {
      * 根据key获取分布式锁
      */
     DistributedLock getDistributedLock(String key);
+
+    /**
+     * 获取多个分布式锁
+     *
+     * @param keys 钥匙
+     * @return {@link DistributedLock}
+     */
+    DistributedLock getMultDistributedLock(String ... keys);
 }
